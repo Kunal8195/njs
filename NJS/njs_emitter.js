@@ -23,7 +23,7 @@ const constructObject = function(callback){
 			/*
 			   getting a name of a Person
 			*/
-			utils.getName.getRandomLine(__dirname+'/name.csv', function(err, result){
+			utils.getName.getRandomLine(path.join(__dirname,'../data/name.csv'), function(err, result){
 				if(!err){
 					dataToSend.name = result;
 					
@@ -38,7 +38,7 @@ const constructObject = function(callback){
 			/*
 			   getting the names of a city
 			*/
-			utils.getCity.getRandomLine(__dirname+'/city.csv', function(err, result){
+			utils.getCity.getRandomLine(path.join(__dirname,'../data/city.csv'), function(err, result){
 				if(!err){
 					dataToSend.origin = result.origin;
 					dataToSend.destination = result.destination;
