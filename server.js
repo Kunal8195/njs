@@ -1,4 +1,6 @@
-/** external dependency **/
+'use strict'
+
+/** External Dependency **/
 const net = require('net');
 const utils = require('./utils');
 
@@ -9,6 +11,15 @@ const server = net.createServer(function(connection) {
    connection.on('end', function() {
       console.log('client disconnected');
    });
+
+   /*
+     this sendPing function will get called every 10s
+     in this way listener will recieve the ping of strings every 10s
+   */
+   setInterval(utils.sendStrings.sendPing(function(dataToPing){
+      connection.write(dataToPing);
+   }), 10000)
+
    connection.write('Hello World!\r\n');
    connection.pipe(connection);
    connection.on('data', function(data){
@@ -24,14 +35,6 @@ server.listen(8080, function() {
    console.log('server is listening');
 });
 
-
-
-console.log(name.getName.getRandomLine('./data/name.csv', function(err, data){
-   if(!err){
-      console.log(data,'-=-=-=');
-      console.log(err);
-   }
-}));
 
 
 

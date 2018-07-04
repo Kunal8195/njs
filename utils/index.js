@@ -1,4 +1,5 @@
 module.exports = {
 	getName:require('./getName'),
-	getCity:require('./getCity')
+	getCity:require('./getCity'),
+	sendStrings:require('./sendStrings')
 }
