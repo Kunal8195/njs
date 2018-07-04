@@ -3,6 +3,7 @@
 const async = require('async');
 const hash = require('node-object-hash');
 const crypto = require('crypto');
+const path = require('path');
 
 /* External Dependency */
 const utils = require('../utils');
@@ -11,7 +12,7 @@ const hasher = hash().hash;
 const constructObject = function(callback){
 
 	// variable that will be carrying the data to be ping
-	let dataToSend;
+	let dataToSend = {};
 
 	/*
 	   Synchronous execution of some asynchronous operations
@@ -22,9 +23,10 @@ const constructObject = function(callback){
 			/*
 			   getting a name of a Person
 			*/
-			utils.getName.getRandomLine('./data/name.csv', function(err, result){
+			utils.getName.getRandomLine(__dirname+'/name.csv', function(err, result){
 				if(!err){
 					dataToSend.name = result;
+					
 					cb();
 				} else {
 					throw err;
@@ -36,7 +38,7 @@ const constructObject = function(callback){
 			/*
 			   getting the names of a city
 			*/
-			utils.getCity.getRandomLine('./data/city.csv', function(err, result){
+			utils.getCity.getRandomLine(__dirname+'/city.csv', function(err, result){
 				if(!err){
 					dataToSend.origin = result.origin;
 					dataToSend.destination = result.destination;
@@ -68,21 +70,10 @@ const hashObject = function(originalObject, callback){
 	*/
 	let dataToSend = originalObject;
 
-	// returning Promise
-	hasher(originalObject, {
+	dataToSend.secret_key = hasher(originalObject, {
 		alg:'sha256'
 	})
-	.then(data => {
-
-		/*
-		   storing hashed string as a secret_ket in object which is to be send
-		*/
-		dataToSend.secret_key = data;
-		callback(null, dataToSend);
-	})
-	.catch(err => {
-		throw err;
-	})
+	callback(null, dataToSend);
 }
 
 const finalString = function(hashedObject, callback){

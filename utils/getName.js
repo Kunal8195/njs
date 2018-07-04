@@ -18,7 +18,7 @@ const getRandomLine = function(filename, callback){
 
 		// Reading file using fs
 		fs.readFile(filename, function(err, data){
-		   console.log('data', data);
+		   
 		   data+='';
 		   if(err) throw err;
 
@@ -41,5 +41,5 @@ const getRandomLine = function(filename, callback){
 }
 
 module.exports = {
-	getRandomLine
+	getRandomLine: getRandomLine
 };

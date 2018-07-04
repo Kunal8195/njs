@@ -5,7 +5,7 @@ const fs = require('fs');
 const async = require('async');
 
 // variable data has to be send with the random name or city 
-let dataToSend;
+let dataToSend = {};
 
 
 const getRandomLine = function(filename, callback){
@@ -21,7 +21,7 @@ const getRandomLine = function(filename, callback){
 
 		// Reading file using fs
 		fs.readFile(filename, function(err, data){
-		   console.log('data', data);
+		   
 		   data+='';
 		   if(err) throw err;
 
