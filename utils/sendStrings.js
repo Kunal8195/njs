@@ -19,6 +19,7 @@ const sendPing = function(callback){
 
 	// generating random number b/w 49-499
 	let randomNumber = Math.floor(Math.random()*(max-min+1)+min);
+	console.log(randomNumber);
 
 	// arr for iterating random number of times
 	let arr = [];

@@ -4,6 +4,9 @@
 const net = require('net');
 const utils = require('./utils');
 
+// Setup DB connection
+//require('./db');
+
 // creating server
 const server = net.createServer(function(connection) { 
    console.log('client connected');
@@ -18,12 +21,30 @@ const server = net.createServer(function(connection) {
    */
    setInterval(function(){
       utils.sendStrings.sendPing(function(dataToPing){
-         connection.write(dataToPing);
+         
+         let len = dataToPing.length;
+         console.log('length',len)
+         let i,j = 2000;         
+         for( i =0;i<len; ){
+            connection.write(dataToPing.slice(i,j));
+            console.log('in for loop');
+            i = i+2000;
+            if( i>= len ){
+               connection.write('done');
+               console.log('done')
+               i = len;
+            }
+            j = j+200;
+            if( j>= len ){
+               console.log('greater then length');
+               j=len;
+            }
+         }
       })
 
    },10000)
 
-   connection.write('Hello World!\r\n');
+   //connection.write('Hello World!\r\n');
    connection.pipe(connection);
    connection.on('data', function(data){
    	console.log('data',data.toString());
