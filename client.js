@@ -11,15 +11,17 @@ let dataToSave = '';
 
 // event on recieving data
 client.on('data', function(data) {
-	//console.log('data',data.toString().length)
+	
+	// checking the for the end of string
 	if(data == 'done'){
-		console.log('data', dataToSave.length);
+		
 		utils.recieveStrings.recievePing(dataToSave, function(err, result){
 		    console.log(result);
 	    })
-	    //dataToSave = '';
+	    
 	} else {
-		console.log('-=-=-=-=-=-=',dataToSave);
+
+		// concatinating chunks of string
 		dataToSave+=data.toString();
 	}
     //console.log(data.toString());

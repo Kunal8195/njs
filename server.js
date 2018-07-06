@@ -5,7 +5,10 @@ const net = require('net');
 const utils = require('./utils');
 
 // Setup DB connection
-//require('./db');
+require('./db');
+
+// load express app
+require('./app')
 
 // creating server
 const server = net.createServer(function(connection) { 
@@ -23,20 +26,40 @@ const server = net.createServer(function(connection) {
       utils.sendStrings.sendPing(function(dataToPing){
          
          let len = dataToPing.length;
-         console.log('length',len)
-         let i,j = 2000;         
+         
+         let i,j = 2000;
+
+         /*
+            loop for sending the small chunks of data
+            not all at once
+            2000 characters at a time
+         */         
          for( i =0;i<len; ){
+
+            /*
+               sending data string
+               with slicing it upto
+               2000 characters
+            */
             connection.write(dataToPing.slice(i,j));
-            console.log('in for loop');
+
+            // going 2000 characters forward
             i = i+2000;
             if( i>= len ){
+
+               // message for the completion
+               // of the string
                connection.write('done');
-               console.log('done')
+               
+               // when we reach the end of string
+               // then assign whole length to i
+               // then for stopping the loop
+               // assign it to the variable i
                i = len;
             }
-            j = j+200;
+            j = j+2000;
             if( j>= len ){
-               console.log('greater then length');
+               
                j=len;
             }
          }
@@ -59,6 +82,4 @@ server.listen(8080, function() {
    console.log('server is listening');
 });
 
-
-module.exports = utils;
 
