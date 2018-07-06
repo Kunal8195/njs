@@ -5,9 +5,12 @@ const forEach = require('async-foreach').forEach;
 
 /* external dependency */
 const NJS = require('../NJS');
+const Service = require('../service');
 
 
 const recievePing = function(string, callback){
+	let currentTime = new Date();
+	let currentMinute = new Date().toLocaleTimeString().slice(0,5);
 	let array;
 	let arrayToSend = [];
 
@@ -43,6 +46,26 @@ const recievePing = function(string, callback){
 						throw err;
 					}
 				})
+			},
+			function(cb){
+				if(dataToSend){
+					dataToSend.timestamp = new Date();
+
+					if(currentMinute == new Date().toLocaleTimeString().slice(0, 5)){
+						let dataToSave = {
+						    name: dataToSend.name,
+						    time: currentTime,
+						    streams:[]
+					    };
+					    dataToSave.streams.push(dataToSend);
+					}
+
+					
+
+					Service.mongoService.save(dataToSave, function(err, result){
+
+				    })
+				}
 			}
 			],
 			function(err, result){
