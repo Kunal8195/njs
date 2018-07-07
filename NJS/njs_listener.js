@@ -9,7 +9,7 @@ const hasher = hash().hash;
 
 const finalString = function(string){
 	return new Promise((resolve, reject) => {
-		let algorithm = 'aes-256-ctr';
+	let algorithm = 'aes-256-ctr';
     let passkey = process.env.PASSKEY || 'd6F3Efeq';
 
 
@@ -19,16 +19,12 @@ const finalString = function(string){
 
     dec = JSON.parse(dec)
     resolve(dec)
-    //callback(null, dec)
-
 	})
 
 }
 
 const hashObject = function(hashedObject, callback){
-
-	return new Promise((resolve, reject) => {
-		/*
+	/*
 	    hashedObject = {
 	   	   name:'',
 	   	   origin:'',
@@ -37,8 +33,9 @@ const hashObject = function(hashedObject, callback){
 	    }
 	*/
 
+	return new Promise((resolve, reject) => {
+
 	// object for storing the field value
-	//console.log('hashedObject',hashedObject)
 	let dataToCheck = {};
 
 	// storing the fields
