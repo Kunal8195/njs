@@ -46,6 +46,8 @@ button:hover {
 
 /* Add padding to container elements */
 .container {
+    border: double;
+    width: 35%;
     padding: 16px;
 }
 
@@ -105,6 +107,12 @@ hr {
     .cancelbtn, .signupbtn {
        width: 100%;
     }
+}
+
+h3 {
+    position: relative;
+    align-content: center;
+    text-align: center
 }
 
 

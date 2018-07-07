@@ -12,6 +12,23 @@ window.onclick = function(event) {
 
 var login = function(){
 
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:3000/login",
+        ContentType: 'application/json',
+        dataType: 'json',
+        crossDomain: true,
+        data: {            
+            email: $('#login_email').val(),
+            password: $('#login_password').val()
+        },
+        success: function (data) {
+            alert("User created Successfully");
+            //window.location.href = 'chatpage.html'
+            console.log('succes: ' + data);
+        }
+    })
+
 	
 }
 
@@ -22,11 +39,12 @@ var signup = function() {
         type: "POST",
         url: "http://localhost:3000/signup",
         ContentType: 'application/json',
-        dataType: 'jsonp',
+        dataType: 'json',
+        crossDomain: true,
         data: {
-            name: $('#signup_name').value,
-            email: $('#signup_email').value,
-            password: $('#signup_password').value
+            name: $('#signup_name').val(), 
+            email: $('#signup_email').val(),
+            password: $('#signup_password').val()
         },
         success: function (data) {
             alert("User created Successfully");

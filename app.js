@@ -14,13 +14,21 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+app.set('views', __dirname + '/views');
+app.use(express.static(__dirname + '/views/frontend'));
+app.engine('html', require('ejs').renderFile);
+
+app.set('view engine', 'ejs');
 //Root Route
 app.get('/', (req, res) => {
-	res.send('Welcome! The app is working fine');
+	res.render('./frontend/client.html');
+	//res.send('Welcome! The app is working fine');
 })
 
 // SignUp Route
 app.post('/signup', (req, res) => {
+	console.log('came here');
 	/*
 	    req.body = {
 	   	    name:'',
