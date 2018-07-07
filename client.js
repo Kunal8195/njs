@@ -13,17 +13,11 @@ let dataToSave = '';
 client.on('data', function(data) {
 	
 	// checking the for the end of string
-	if(data == 'done'){
+	
 		
-		utils.recieveStrings.recievePing(dataToSave, function(err, result){
+		utils.recieveStrings.recievePing(data, function(err, result){
 		    console.log(result);
 	    })
-	    
-	} else {
-
-		// concatinating chunks of string
-		dataToSave+=data.toString();
-	}
     //console.log(data.toString());
    //client.end();
 });
@@ -32,3 +26,5 @@ client.on('data', function(data) {
 client.on('end', function() { 
    console.log('disconnected from server');
 });
+
+let currentTime = new Date().toString();

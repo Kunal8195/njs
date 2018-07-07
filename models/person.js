@@ -5,9 +5,9 @@ const Schema = mongoose.Schema;
 
 const person = new Schema({
 	
-    name: {type: String, trim: true, required: true},
-    time: {type: Date},
-    stream: {type: Array}
+    name: {type: String, trim: true},
+    time: {type: String},
+    streams: {type: Array, "default": []}
 
 });
 

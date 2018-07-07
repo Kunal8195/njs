@@ -14,8 +14,8 @@ const sendPing = function(callback){
 	// varialble which will be used in between the different asynchronous calls
 	let dataToForward = null;
 
-	let max = 499;
-	let min = 49;
+	let max = 145;
+	let min = 1;
 
 	// generating random number b/w 49-499
 	let randomNumber = Math.floor(Math.random()*(max-min+1)+min);

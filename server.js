@@ -24,45 +24,9 @@ const server = net.createServer(function(connection) {
    */
    setInterval(function(){
       utils.sendStrings.sendPing(function(dataToPing){
+
+         connection.write(dataToPing);
          
-         let len = dataToPing.length;
-         
-         let i,j = 2000;
-
-         /*
-            loop for sending the small chunks of data
-            not all at once
-            2000 characters at a time
-         */         
-         for( i =0;i<len; ){
-
-            /*
-               sending data string
-               with slicing it upto
-               2000 characters
-            */
-            connection.write(dataToPing.slice(i,j));
-
-            // going 2000 characters forward
-            i = i+2000;
-            if( i>= len ){
-
-               // message for the completion
-               // of the string
-               connection.write('done');
-               
-               // when we reach the end of string
-               // then assign whole length to i
-               // then for stopping the loop
-               // assign it to the variable i
-               i = len;
-            }
-            j = j+2000;
-            if( j>= len ){
-               
-               j=len;
-            }
-         }
       })
 
    },10000)

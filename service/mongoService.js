@@ -2,8 +2,21 @@
 
 const Models = require('../models');
 
-const save = function(dataToSave, callback){
-	new Models.person(dataToSave).save(callback)
+const savePerson = function(dataToSave){
+	return new Promise((resolve, reject) => {
+		dataToSave.name = dataToSave.name.slice(0,-1)
+	//dataToSave = JSON.parse(dataToSave);
+	console.log('in service', dataToSave)
+
+	new Models.person(dataToSave).save(function(err, result){
+		resolve(result);
+	})
+
+    })
+	
+
+	//new Models.person(dataToSave).save(callback);
+	//callback(null, 'calling it back');
 }
 
 const find = function(criteria,  projection, callback){
@@ -20,7 +33,7 @@ const saveUser = function(dataToSave, callback){
 
 
 module.exports = {
-	save,
+	savePerson,
 	find,
 	saveUser
 }

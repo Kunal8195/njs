@@ -5,7 +5,7 @@ const async = require('async');
 const MD5 = require('md5');
 
 /* External Dependency */
-const Service = require('service');
+const Service = require('../service');
 
 
 const signUp = function(payload, callback){
@@ -105,7 +105,7 @@ const logIn = function(payload, callback){
 			}
 			else{
 				dataToSend = {
-					message:'Incorrect Password';
+					message:'Incorrect Password'
 				}
 				callback(dataToSend);
 			}
