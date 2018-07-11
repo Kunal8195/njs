@@ -91,7 +91,7 @@ const recievePing = async (string, callback) => {
 	if(dataToSend){
 					    arrayToSend[index] = dataToSend;
 					    if(index == length-1){	
-					    console.log(arrayToSend);
+					    //console.log(arrayToSend);
 						    callback(null, arrayToSend);
 					    }
 					} else {

@@ -1,107 +1,94 @@
-const Service = require('./service');
-require('./db');
-
-var i =0;
-var j = -1;
-var dataToSave = []
-
-dataToSave[0] = {
-	name:'kunalpal',
-	//"time":'12:24:23'
-	email:'kpal@gmail.com',
-	password:'12345@'
-
-};
-dataToSave[1] = {
-	"fullName":'kun pal',
-	"time":'12:24:23'
-}
-//for(i;;){
-	//if(i>j){
-		j = i;
-		Service.mongoService.savePerson(dataToSave[1], function(err, data){
-			if(!err){
-				console.log(data)
-				i++;
-			} else {
-				throw err;
-			}
-		})
-
-	//}
-
-//}
 
 
-/*const recievePing = async (string, callback) => {
-	let currentTime = new Date().toString();
-	let currentMinute = new Date().toLocaleTimeString().slice(0,5);
-	let array;
-	let arrayToSend = [];
-	let dataToSave;
 
-	string = string.toString();
-	array = string.split('|');
-	let length = array.length;
-	console.log(length);
+/*
+const http = require('http');
+const crypto = require('crypto');
+const bufferUtil = require('bufferutil');
+const constants = require('./constants');
 
-await forEach(array, function(element, index){
-	let dataToSend;
+const buffer = crypto.randomBytes(10);
+const mask = crypto.randomBytes(4);
 
-	await NJS.njs_listener.finalString(element).then((result) => {
-		dataToSend = result;
-	})
+console.log(buffer, mask);
 
-	await NJS.njs_listener.hashObject(dataToSend).then((result) => {
-		dataToSend = result;
-	})
+//process.unmask([mask])
 
-	if(dataToSend){
-					//console.log('in here');
-					dataToSend.timestamp = new Date();
+// Create an HTTP server
+const srv = http.createServer((req, res) => {
+  //res.writeHead(200, { 'Content-Type': 'text/plain'});
+  console.log(req.headers)
+  res.setHeader('Access-Control-Allow-Origin', null);
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Methods', 'GET', 'POST', 'PUT')
+res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  res.end('okay');
+});
 
-					if(currentMinute == new Date().toLocaleTimeString().slice(0, 5)){
-						console.log('1----');
-						dataToSave = {
-						    name: dataToSend.name,
-						    time: currentTime,
-						    //streams:[]
-					    };
-					    cb();
-					    //dataToSave.streams.push(dataToSend);
-					    //console.log('now u here', dataToSave);
-					} else {
-						console.log('2----');
-						currentTime = new Date().toString();
-						currentMinute = new Date().toLocaleTimeString().slice(0,5);
-						dataToSave = {
-							name: dataToSend.name,
-						    time: currentTime,
-						    //streams:[]
-						}
-						cb();
-						//dataToSave.streams.push(dataToSend);
-						
-					}
-					
-				}
 
-	await Service.mongoService.savePerson(dataToSave).then((result) => {
-		dataToSend = result;
-	})
+/*srv.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});*/
 
-	if(dataToSend){
-					    arrayToSend[index] = dataToSend;
-					    if(index == length-1){	
-					    console.log(arrayToSend);
-						    callback(null, arrayToSend);
-					    }
-					} else {
-						arrayToSend[index] = null;
-	}
+/*srv.on('upgrade', (req, socket, head) => {
 
-})
+  
+  //bufferUtil.unmask(10, 4)
 
-}
+  console.log(head.length)
 
-*/
+  const key = crypto.createHash('sha1')
+      .update(req.headers['sec-websocket-key'] + constants.GUID, 'binary')
+      .digest('base64');
+
+  const ab = req.headers['sec-websocket-protocol']
+  console.log(ab);
+  //const ba = 
+
+  let head1 = 'HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
+               'Upgrade: WebSocket\r\n' +
+               'Connection: Upgrade\r\n' +
+               `Sec-WebSocket-Accept: ${key}\r\n` +
+               'Sec-WebSocket-Protocol: http\r\n' +
+               '\r\n';
+
+  
+  //bufferUtil.unmask(head1, head1.length)
+
+  socket.write(head1);
+
+  socket.pipe(socket); // echo back
+
+
+
+  socket.on('error',function(data){
+    
+    console.log('-=-=-=-', data.toString());
+  })
+});
+
+// now that server is running
+srv.listen(1337, '127.0.0.1', () => {
+
+  // make a request
+  const options = {
+    port: 1337,
+    hostname: '127.0.0.1',
+    headers: {
+      'Connection': 'Upgrade',
+      'Upgrade': 'websocket'
+    }
+  };
+
+  const req = http.request(options);
+  req.end();
+
+  req.on('upgrade', (res, socket, upgradeHead) => {
+    console.log('got upgraded!');
+    //socket.end();
+    //process.exit(0);
+  });
+});*/
+

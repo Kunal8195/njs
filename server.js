@@ -1,49 +1,122 @@
 'use strict'
 
-/** External Dependency **/
-const net = require('net');
+/** 3rd Party **/
+const express = require('express');  
+const bodyParser = require('body-parser');
+
+/* External Dependency */
+const Controller = require('./controller')
 const utils = require('./utils');
 
-// Setup DB connection
+let temp;
+
+/*
+   Setup DB connection
+*/ 
 require('./db');
 
-// load express app
-require('./app')
+/*
+   * Express App
+*/
+const app = express();  
 
-// creating server
-const server = net.createServer(function(connection) { 
-   console.log('client connected');
-   
-   connection.on('end', function() {
-      console.log('client disconnected');
-   });
+// server
+const server = require('http').createServer(app);  
+const io = require('socket.io')(server);
 
-   /*
+/*
+  * listen for connection success
+  *  with browser client
+*/
+io.on('connection', function(client) {  
+    console.log('Client connected...');
+
+    /*
      this sendPing function will get called every 10s
      in this way listener will recieve the ping of strings every 10s
    */
    setInterval(function(){
       utils.sendStrings.sendPing(function(dataToPing){
 
-         connection.write(dataToPing);
+         client.emit('messageToServerClient',dataToPing);
          
       })
 
    },10000)
 
-   //connection.write('Hello World!\r\n');
-   connection.pipe(connection);
-   connection.on('data', function(data){
-   	console.log('data',data.toString());
-   });
-   connection.on('error', function(data){
-   	console.log('error', data);
-   })
+    /* 
+      listen for user defined events
+    */
+    client.on('join', function(data) {
+
+      /*
+        * emit messaged on some events
+      */
+      client.emit('messages', temp);
+        console.log(data);
+    });
+
+    client.on('messageToBrowser', function(data){
+      console.log('-=-=-=-=-');
+      temp = data;
+      client.emit('sendToBrowser',data);
+    })
 });
 
-// server listen
-server.listen(8080, function() { 
-   console.log('server is listening');
+/*
+  * Middlewares
+*/
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.static(__dirname + '/node_modules'));  
+
+/*
+  root route
+  this will display the home page of the app
+*/
+app.get('/', function(req, res,next) {  
+    res.sendFile(__dirname + '/client.html');
 });
 
+// SignUp Route
+app.post('/signup', (req, res) => {
+  console.log('came here');
+  /*
+      req.body = {
+          name:'',
+          email:'',
+          password:'' 
+      }
+  */
+  Controller.userController.signUp(req.body, function(err, result){
+    if(!err){
+      res.status(200).send(result)
+    } else {
+      res.status(401).send(err)
+    }
+  })
+})
 
+// Login Route
+app.post('/login', (req, res) => {
+  /*
+      req.body = {
+          email:'',
+          password:''
+      }
+  */
+  Controller.userController.logIn(req.body, function(err, result){
+    if(!err){
+      res.status(200).send(result)
+    } else {
+      res.status(401).send(err)
+    }
+  })
+
+})
+
+server.listen(4200, (err, data) => {
+  if(!err){
+    console.log('server listening on http://localhost:4200')
+  }
+});

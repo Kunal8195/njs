@@ -53,3 +53,45 @@ var signup = function() {
         }
     })
 }
+
+var websocket = function(){
+    var connection = new WebSocket("ws://127.0.0.1:1337",['http','xmpp'])
+
+    connection.onopen = function (event) {
+        connection.send("Here's some text that the server is urgently awaiting!"); 
+    };
+
+    connection.onerror = function (error) {
+        console.log('WebSocket Error ', error);
+    };
+
+
+    //exampleSocket.send('hpow u ding');
+
+    connection.onmessage = function (event) {
+        console.log(event.data);
+    }
+}
+
+//websocket();
+/*
+const socket = io('http://localhost:3000');
+
+//console.log(socket);
+
+socket.on('error', function(data){
+    console.log(err);
+})
+
+socket.on('connect', function(){
+    socket.emit('join', 'Hello World from client');
+    console.log('connected');    
+
+})
+
+socket.on('disconnect', function(){
+   console.log('user disconnected');
+});
+
+*/
+
